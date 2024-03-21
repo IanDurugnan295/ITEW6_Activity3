@@ -35,20 +35,30 @@
     },
     methods: {
       addToCart(item) {
+        let existingItemIndex = cart.findIndex(cartItem => cartItem.name === item.name);
+
+        if (existingItemIndex !== -1) {
           let answer = prompt("How many pieces?", "Please enter the amount");
-          let text;
-          if (answer == null || answer == "") {
-            text = "User cancelled the prompt!";
-            alert(text);
-          } else {
-            let totalPrice = item.price * answer;
-            text = totalPrice;
-            cart.push({
-              name: item.name,
-              price: text,
-              quantity: answer
-            });
+          if (answer == null || answer === "") {
+            alert("User cancelled the prompt!");
+            return;
           }
+          cart[existingItemIndex].quantity += parseInt(answer);
+        } else {
+          let answer = prompt("How many pieces?", "Please enter the amount");
+          if (answer == null || answer === "") {
+            alert("User cancelled the prompt!");
+            return;
+          }
+          
+          let totalPrice = item.price * answer;
+          cart.push({
+            name: item.name,
+            price: totalPrice,
+            unitPrice: item.price,
+            quantity: parseInt(answer)
+          });
+        }
       },
       handleLogout() {
         localStorage.removeItem('token');

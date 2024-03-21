@@ -8,7 +8,7 @@
       <th>Remove</th>
       <tr v-for="(item, index) in cart" :key="index">
         <td>{{ item.name }}</td>
-        <td align="right">₱{{ item.price }}.00</td>
+        <td align="right">₱{{ computedItemPrice(item) }}.00</td>
         <td align="right">{{ item.quantity }}</td>
         <td><button @click="editQuantity(index)">Edit Quantity</button></td>
         <td><button @click="removeFromCart(index)">Remove from Cart</button></td>
@@ -46,11 +46,14 @@ export default {
     },
     checkOut(){
       alert("Check Out is not part of the task!")
+    },
+    computedItemPrice(item) {
+      return item.unitPrice * item.quantity;
     }
   },
   computed: {
     totalPrice() {
-      return this.cart.reduce((total, item) => total + parseInt(item.price), 0);
+      return this.cart.reduce((total, item) => total + this.computedItemPrice(item), 0);
     }
   }
 };
